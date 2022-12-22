@@ -1,0 +1,120 @@
+let cartInformation;
+let shopping = [];
+
+function showCategories() {
+    const container = document.querySelector('.categories');
+
+    for (let i = 0; i < data.length; i++) {
+        const elem = document.createElement('div');
+        elem.textContent = data[i].name;
+        elem.setAttribute('data-category', i);
+        elem.addEventListener('click', showProducts);
+        container.appendChild(elem);
+    }
+}
+
+// handler of click on categories
+function showProducts(event) {
+    const categoryIndex = event.target.getAttribute('data-category');
+    const products = data[categoryIndex].products;
+    const container = document.querySelector('.products');
+    container.innerHTML = '';
+
+    for (let i = 0; i < products.length; i++) {
+        const elem = document.createElement('div');
+        elem.textContent = products[i].name;
+        elem.setAttribute('data-product', i);
+        elem.setAttribute('data-category', categoryIndex);
+        elem.addEventListener('click', showDetails);
+        container.appendChild(elem);
+    }
+}
+
+function showDetails(event) {
+    const container = document.querySelector('.details');
+    container.innerHTML = '';
+
+    const categoryIndex = event.target.getAttribute('data-category');
+    const productIndex = event.target.getAttribute('data-product');
+
+    const info = document.createElement('div');
+    const aboutProduct = data[categoryIndex].products[productIndex]
+
+    info.innerText = `Your price is: ${aboutProduct.price} $ \n  Description : ${aboutProduct.description}`;
+    container.appendChild(info);
+    cartInformation = aboutProduct.name + ' ' + info.innerText
+    const buy = document.createElement('button');
+    buy.setAttribute('class', 'final');
+    buy.textContent = 'Press to buy'
+    container.appendChild(buy);
+    buy.addEventListener('click', cart)
+
+}
+
+function cart() {
+    const submitInfo = document.querySelector('.result');
+    submitInfo.classList.add('red');
+
+    shopping.push({value: cartInformation});
+    localStorage.setItem('inform', JSON.stringify(shopping));
+
+    submitInfo.textContent = 'товар куплен';
+    setTimeout(clear, 1000);
+
+    function clear() {
+        document.querySelector('.details').innerHTML = '';
+        document.querySelector('.products').innerHTML = '';
+        submitInfo.textContent = '';
+        submitInfo.classList.remove('red')
+    }
+
+}
+
+
+document.querySelector('#cart').addEventListener('click', showList);
+
+function showList() {
+    let cartInfo = JSON.parse(localStorage.getItem('inform'));
+    const orderList = document.querySelector('#order_list');
+    for (let i = 0; i < cartInfo.length; i++) {
+        const cartList = document.createElement('li');
+        cartList.innerText = cartInfo[i].value;
+        orderList.appendChild(cartList);
+        const remove = document.createElement('button');
+        remove.setAttribute('class', 'delete');
+        remove.innerText = 'delete';
+        cartList.setAttribute('data-index', i);
+        remove.addEventListener('click', delItem);
+        remove.setAttribute('del_index', i)
+        cartList.appendChild(remove)
+    }
+    console.log(cartInfo);
+
+    function delItem(event) {
+
+
+    }
+
+
+}
+
+
+showCategories();
+
+
+// const date = new Date();
+// console.log(date)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
