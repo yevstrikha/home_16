@@ -1,10 +1,13 @@
 let cartInformation;
 let shopping = [];
+document.querySelector('#cart').addEventListener('click', showList);
 
 function showCategories() {
     const container = document.querySelector('.categories');
 
     for (let i = 0; i < data.length; i++) {
+        document.querySelector('#order_list').style.display = 'none'
+
         const elem = document.createElement('div');
         elem.textContent = data[i].name;
         elem.setAttribute('data-category', i);
@@ -48,53 +51,69 @@ function showDetails(event) {
     buy.textContent = 'Press to buy'
     container.appendChild(buy);
     buy.addEventListener('click', cart)
-
 }
 
 function cart() {
     const submitInfo = document.querySelector('.result');
     submitInfo.classList.add('red');
-
     shopping.push({value: cartInformation});
-    localStorage.setItem('inform', JSON.stringify(shopping));
-
     submitInfo.textContent = 'товар куплен';
+
+    console.log(shopping)
     setTimeout(clear, 1000);
 
     function clear() {
         document.querySelector('.details').innerHTML = '';
         document.querySelector('.products').innerHTML = '';
         submitInfo.textContent = '';
-        submitInfo.classList.remove('red')
+        submitInfo.classList.remove('red');
     }
+    localStorage.setItem('inform', JSON.stringify(shopping));
 
 }
 
 
-document.querySelector('#cart').addEventListener('click', showList);
 
 function showList() {
     let cartInfo = JSON.parse(localStorage.getItem('inform'));
     const orderList = document.querySelector('#order_list');
+    orderList.innerHTML = "";
+
+    const okay = document.createElement('button');
+    okay.setAttribute('class', 'okay');
+    okay.textContent = 'OK';
+    okay.addEventListener('click', backToOrders)
+    orderList.appendChild(okay)
+
     for (let i = 0; i < cartInfo.length; i++) {
         const cartList = document.createElement('li');
-        cartList.innerText = cartInfo[i].value;
+        cartList.innerText = cartInfo[i].value ;
         orderList.appendChild(cartList);
         const remove = document.createElement('button');
-        remove.setAttribute('class', 'delete');
-        remove.innerText = 'delete';
         cartList.setAttribute('data-index', i);
-        remove.addEventListener('click', delItem);
-        remove.setAttribute('del_index', i)
-        cartList.appendChild(remove)
+        remove.setAttribute('del_index', i);
+        remove.addEventListener('click', delItem)
+        cartList.appendChild(remove);
+
     }
-    console.log(cartInfo);
 
     function delItem(event) {
-
+        const IndexOfArr = event.target.getAttribute('del_index')
+        cartInfo.splice(IndexOfArr, 1);
+        const list = document.querySelector('li');
+        list.remove();
+        localStorage.setItem('inform', JSON.stringify(cartInfo));
 
     }
 
+    function backToOrders() {
+        document.querySelector('#order_list').style.display = 'none';
+        document.querySelector('.container').style.display = 'flex';
+
+    }
+
+    document.querySelector('.container').style.display = 'none';
+    document.querySelector('#order_list').style.display = "block";
 
 }
 

@@ -50,3 +50,48 @@
     margin-top: 15px;
     padding: 15px 0;
 }
+
+#order_list{
+    list-style: none;
+    max-width: 60%;
+    width: 100%;
+    border: solid 1px #cccccc;
+    margin: auto;
+    padding: 25px 25px 50px 25px;
+    position: relative;
+}
+#order_list li{
+    margin-bottom: 15px;
+    border-bottom: solid 1px #222222;
+    padding-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.okay{
+    padding: 5px 20px;
+    border-radius: 3px;
+    background-color: #13be13;
+    border: none;
+    color: white;
+    max-width: 60px;
+    width: 100%;
+    display: inline-block;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+#order_list li button{
+
+    background-color: transparent;
+}
+
+
+#order_list li button:after{
+    content: "\f1f8";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: red;
+}
